@@ -50,9 +50,9 @@ class HttpMetricsSpec extends AkkaTestkitSpecs2Support with SpecificationLike {
       metrics.idle.name must be equalTo "container.http.idle-timeouts"
 
       val metricRegistry = Metrics().metricRegistry
-      import scala.collection.convert.WrapAsScala.mapAsScalaMap
-      metricRegistry.getGauges.foreach(_._2.getValue)
-      metricRegistry.getGauges().filterKeys(g => !g.startsWith("jvm.")).size must be equalTo 8
+      import scala.collection.JavaConverters._
+      metricRegistry.getGauges.asScala.foreach(_._2.getValue)
+      metricRegistry.getGauges().asScala.filterKeys(g => !g.startsWith("jvm.")).size must be equalTo 8
     }
 
     "schedule and cancel the metrics job" in {
